@@ -29,7 +29,7 @@ DATA_DIR=("/data/var/lib/docker" "/data/root/.docker"
 "/data/var/lib/etcd" "/data/var/lib/kubelet"
 "/data/kubernetes" "/data/root/.kube")
 PATH=$PATH:/usr/local/bin
-UPGRADE_DIR="/opt/upgrade"
+UPGRADE_DIR="/data/upgrade"
 UPGRADE_IMAGE="${UPGRADE_DIR}/image"
 UPGRADE_BINARY="${UPGRADE_DIR}/binary"
 UPGRADE_SCRIPT="${UPGRADE_DIR}/kubernetes"
@@ -269,9 +269,15 @@ function replace_kv(){
 
 function install_kubesphere(){
     log "install_kubesphere: create kubesphere-system namespace"
-    retry kubectl create ns  kubesphere-system
+    while !(kubectl get ns kubesphere-system 1> /dev/null 2>&1)
+    do
+        retry kubectl create ns kubesphere-system
+    done
     log "install_kubesphere: create kubesphere-monitoring-system namespace"
-    retry kubectl create ns kubesphere-monitoring-system
+    while !(kubectl get ns kubesphere-monitoring-system 1> /dev/null 2>&1)
+    do
+        retry kubectl create ns kubesphere-monitoring-system
+    done
 
     if [ ! -f "/etc/kubernetes/pki/ca.crt" ] || [ ! -f "/etc/kubernetes/pki/ca.key" ] || 
     [ ! -f "/etc/kubernetes/pki/front-proxy-client.crt" ] || [ ! -f "/etc/kubernetes/pki/front-proxy-client.key" ]
@@ -398,6 +404,110 @@ function upgrade_k8s_image(){
     # tiller
     docker load < ${UPGRADE_IMAGE}/tiller-v2.12.3.img
     docker load < ${UPGRADE_IMAGE}/nginx-1.14-alpine.img
+
+    docker load < ${UPGRADE_IMAGE}/ks-console-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/kubectl-v1.0.0.img
+    docker load < ${UPGRADE_IMAGE}/ks-account-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/ks-devops-flyway-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/ks-apigateway-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/ks-apiserver-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/ks-controller-manager-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/docs.kubesphere.io-advanced-2.0.0.img
+    docker load < ${UPGRADE_IMAGE}/cloud-controller-manager-v1.4.0.img
+    docker load < ${UPGRADE_IMAGE}/ks-installer-v2.1.0.img
+
+    docker load < ${UPGRADE_IMAGE}/nginx-ingress-controller-0.24.1.img
+    docker load < ${UPGRADE_IMAGE}/defaultbackend-amd64-1.4.img
+    docker load < ${UPGRADE_IMAGE}/metrics-server-amd64-v0.3.1.img
+
+    docker load < ${UPGRADE_IMAGE}/notification-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/notification-flyway_v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/alerting-dbinit-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/alerting-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/alert_adapter-v2.1.0.img
+
+    docker load < ${UPGRADE_IMAGE}/release-app-v0.4.2.img
+    docker load < ${UPGRADE_IMAGE}/openpitrix-flyway-v0.4.5.img
+    docker load < ${UPGRADE_IMAGE}/openpitrix-v0.4.5.img
+    docker load < ${UPGRADE_IMAGE}/runtime-provider-kubernetes-v0.1.2.img
+
+    docker load < ${UPGRADE_IMAGE}/jenkins-uc-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/jenkins-2.176.2.img
+    docker load < ${UPGRADE_IMAGE}/jnlp-slave-3.27-1.img
+    docker load < ${UPGRADE_IMAGE}/builder-base-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/builder-nodejs-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/builder-maven-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/builder-go-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/sonarqube-7.4-community.img
+
+    docker load < ${UPGRADE_IMAGE}/s2ioperator-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/s2irun-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/java-11-centos7-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/s2i-binary-v2.1.0.img
+
+    docker load < ${UPGRADE_IMAGE}/configmap-reload-v0.0.1.img
+    docker load < ${UPGRADE_IMAGE}/prometheus-v2.5.0.img
+    docker load < ${UPGRADE_IMAGE}/prometheus-config-reloader-v0.27.1.img
+    docker load < ${UPGRADE_IMAGE}/prometheus-operator-v0.27.1.img
+    docker load < ${UPGRADE_IMAGE}/kube-rbac-proxy-v0.4.1.img
+    docker load < ${UPGRADE_IMAGE}/kube-state-metrics-v1.5.2.img
+    docker load < ${UPGRADE_IMAGE}/node-exporter-ks-v0.16.0.img
+    docker load < ${UPGRADE_IMAGE}/addon-resizer-1.8.4.img
+    docker load < ${UPGRADE_IMAGE}/addon-resizer-1.8.3.img
+    docker load < ${UPGRADE_IMAGE}/grafana:5.2.4.img
+
+    docker load < ${UPGRADE_IMAGE}/docker-elasticsearch-curator-5.5.4.img
+    docker load < ${UPGRADE_IMAGE}/elasticsearch-oss-6.7.0-1.img
+    docker load < ${UPGRADE_IMAGE}/fluent-bit-v1.3.2-reload.img
+    docker load < ${UPGRADE_IMAGE}/kibana-oss-6.7.0.img
+    docker load < ${UPGRADE_IMAGE}/bats-0.4.0.img
+    docker load < ${UPGRADE_IMAGE}/fluentbit-operator-v2.1.0.img
+    docker load < ${UPGRADE_IMAGE}/fluent-bit-v1.3.2-reload.img
+    docker load < ${UPGRADE_IMAGE}/configmap-reload-v0.0.1.img
+    docker load < ${UPGRADE_IMAGE}/log-sidecar-injector-1.0.img
+
+    docker load < ${UPGRADE_IMAGE}/kubectl-1.3.3.img
+    docker load < ${UPGRADE_IMAGE}/proxyv2-1.3.3.img
+    docker load < ${UPGRADE_IMAGE}/citadel-1.3.3.img
+    docker load < ${UPGRADE_IMAGE}/pilot-1.3.3.img
+    docker load < ${UPGRADE_IMAGE}/mixer-1.3.3.img
+    docker load < ${UPGRADE_IMAGE}/galley-1.3.3.img
+    docker load < ${UPGRADE_IMAGE}/proxy_init-1.3.3.img
+    docker load < ${UPGRADE_IMAGE}/sidecar_injector-1.3.3.img
+    docker load < ${UPGRADE_IMAGE}/jaeger-operator-1.13.1.img
+    docker load < ${UPGRADE_IMAGE}/jaeger-agent-1.13.img
+    docker load < ${UPGRADE_IMAGE}/jaeger-collector-1.13.img
+    docker load < ${UPGRADE_IMAGE}/jaeger-query-1.13.img
+
+    docker load < ${UPGRADE_IMAGE}/redis-5.0.5-alpine.img
+    docker load < ${UPGRADE_IMAGE}/busybox-1.28.4.img
+    docker load < ${UPGRADE_IMAGE}/mysql-8.0.11.img
+    docker load < ${UPGRADE_IMAGE}/nginx-1.14-alpine.img
+    docker load < ${UPGRADE_IMAGE}/postgres-9.6.8.img
+    docker load < ${UPGRADE_IMAGE}/openldap-1.3.0.img
+    docker load < ${UPGRADE_IMAGE}/alpine-3.9.img
+    docker load < ${UPGRADE_IMAGE}/haproxy-2.0.4.img
+    docker load < ${UPGRADE_IMAGE}/wget-1.0.img
+    docker load < ${UPGRADE_IMAGE}/minio-RELEASE.2019-08-07T01-59-21Z.img
+    docker load < ${UPGRADE_IMAGE}/minio-RELEASE.2017-12-28T01-21-00Z.img
+    docker load < ${UPGRADE_IMAGE}/mc-RELEASE.2019-08-07T23-14-43Z.img
+    docker load < ${UPGRADE_IMAGE}/mc-RELEASE.2018-07-13T00-53-22Z.img
+
+    docker load < ${UPGRADE_IMAGE}/examples-bookinfo-productpage-v1-1.13.0.img
+    docker load < ${UPGRADE_IMAGE}/examples-bookinfo-reviews-v1-1.13.0.img
+    docker load < ${UPGRADE_IMAGE}/examples-bookinfo-reviews-v2-1.13.0.img
+    docker load < ${UPGRADE_IMAGE}/examples-bookinfo-reviews-v3-1.13.0.img
+    docker load < ${UPGRADE_IMAGE}/examples-bookinfo-details-v1-1.13.0.img
+    docker load < ${UPGRADE_IMAGE}/examples-bookinfo-ratings-v1-1.13.0.img
+
+    docker load < ${UPGRADE_IMAGE}/netshoot-v1.0.img
+    docker load < ${UPGRADE_IMAGE}/hello-plain-text.img
+    docker load < ${UPGRADE_IMAGE}/mysql-8.0.11.img
+    docker load < ${UPGRADE_IMAGE}/wordpress-4.8-apache.img
+    docker load < ${UPGRADE_IMAGE}/hpa-example-latest.img
+    docker load < ${UPGRADE_IMAGE}/java-openjdk-8-jre-alpine.img
+    docker load < ${UPGRADE_IMAGE}/fluentd-v1.4.2-2.0.img
+    docker load < ${UPGRADE_IMAGE}/perl-latest.img
 }
 
 function upgrade_copy_confd(){

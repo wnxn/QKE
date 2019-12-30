@@ -16,10 +16,8 @@
 
 SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
 K8S_HOME=$(dirname "${SCRIPTPATH}")
-UPGRADE_DIR="/opt/upgrade"
-UPGRADE_IMAGE="${UPGRADE_DIR}/image"
-UPGRADE_BINARY="${UPGRADE_DIR}/binary"
-UPGRADE_SCRIPT="${UPGRADE_SCRIPT}/script"
+
+source ${K8S_HOME}/snapshot/update-header.sh
 
 set -o errexit
 set -o nounset

@@ -1,12 +1,27 @@
-# 格式化硬盘
+# In-place 升级快照说明
 
-## 寻找设备
+快照内有 binary, image, kubernetes 三个文件夹。
+- binary: 存放 k8s 二进制组件。
+- image: 存放 ks 镜像压缩文件。
+- kubernetes: QKE 代码仓库。
+
+- client角色： /upgrade/binary -> /root/binary, /upgrade/kubernetes -> /root/kubernetes
+- 其他角色： /upgrade -> /data/upgrade
+
+- /data/upgrade/kubernetes/script/upgrade-master.sh
+- /root/kubernetes/script/upgrade-client.sh
+
+## 制作升级快照
+
+### 格式化硬盘
+
+### 寻找设备
 ```
 fdisk -l
 /dev/vdc
 ```
 
-## 分区
+### 分区
 
 ```
 parted /dev/vdc
@@ -16,19 +31,19 @@ print
 quit
 ```
 
-## 格式化
+### 格式化
 ```
 mkfs.ext4 /dev/vdc
 mount /dev/vdc /opt/upgrade
 ```
 
-# 拷贝数据
+### 拷贝数据
 
 ```
 /opt/kubernetes/snapshot/build-base.sh
 ```
 
-# 制作快照
+### 制作快照
 
 ```
 umount /dev/vdc
@@ -46,3 +61,4 @@ port: 443
 protocol: 'https'
 uri: '/iaas'
 ```
+

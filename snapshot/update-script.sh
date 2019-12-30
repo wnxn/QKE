@@ -14,10 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-UPGRADE_DIR="/opt/upgrade"
-UPGRADE_IMAGE="${UPGRADE_DIR}/image"
-UPGRADE_BINARY="${UPGRADE_DIR}/binary"
-UPGRADE_SCRIPT="${UPGRADE_SCRIPT}/script"
+SCRIPTPATH=$( cd $(dirname $0) ; pwd -P )
+K8S_HOME=$(dirname "${SCRIPTPATH}")
+
+source ${K8S_HOME}/snapshot/update-header.sh
 
 rm -rf ${UPGRADE_SCRIPT}/*
 cp -r /opt/kubernetes ${UPGRADE_DIR}/
