@@ -21,7 +21,7 @@ spec:
     - --enable-bootstrap-token-auth=true
     - --etcd-prefix={{getv "/cluster/cluster_id"}}
     - --etcd-servers={{if exists "/links/etcd_service/cluster/cluster_id"}}{{range $index,$value := gets "/links/etcd_service/hosts/etcd_node/*/ip"}}{{if gt $index 0}},{{end}}http://{{print .Value}}:2379{{end}}{{else}}{{range $index,$value := gets "/hosts/master/*/ip"}}{{if gt $index 0}},{{end}}http://{{print .Value}}:2379{{end}}{{end}}
-    - --feature-gates=CSINodeInfo=true,CSIDriverRegistry=true,KubeletPluginsWatcher=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true,VolumePVCDataSource=true
+    - --feature-gates=CSINodeInfo=true,CSIDriverRegistry=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true,VolumePVCDataSource=true
     - --insecure-port=8080
     - --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt
     - --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key
@@ -40,7 +40,7 @@ spec:
     - --tls-cert-file=/etc/kubernetes/pki/apiserver.crt
     - --tls-private-key-file=/etc/kubernetes/pki/apiserver.key
     - --v={{getv "/env/kube_log_level"}}
-    image: gcr.azk8s.cn/google_containers/hyperkube:v1.15.5
+    image: gcr.azk8s.cn/google_containers/hyperkube:v1.16.7
     imagePullPolicy: IfNotPresent
     livenessProbe:
       failureThreshold: 8

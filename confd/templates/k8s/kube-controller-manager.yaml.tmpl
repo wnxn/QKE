@@ -20,7 +20,7 @@ spec:
     - --cluster-signing-cert-file=/etc/kubernetes/pki/ca.crt
     - --cluster-signing-key-file=/etc/kubernetes/pki/ca.key
     - --controllers=*,bootstrapsigner,tokencleaner
-    - --feature-gates=CSINodeInfo=true,CSIDriverRegistry=true,KubeletPluginsWatcher=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true,VolumePVCDataSource=true
+    - --feature-gates=CSINodeInfo=true,CSIDriverRegistry=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true,VolumePVCDataSource=true
     - --kubeconfig=/etc/kubernetes/controller-manager.conf
     - --leader-elect=true
     - --node-cidr-mask-size=24
@@ -29,7 +29,7 @@ spec:
     - --service-account-private-key-file=/etc/kubernetes/pki/sa.key
     - --use-service-account-credentials=true
     - --v={{getv "/env/kube_log_level"}}
-    image: gcr.azk8s.cn/google_containers/hyperkube:v1.15.5
+    image: gcr.azk8s.cn/google_containers/hyperkube:v1.16.7
     imagePullPolicy: IfNotPresent
     livenessProbe:
       failureThreshold: 8

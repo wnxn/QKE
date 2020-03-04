@@ -12,11 +12,11 @@ spec:
     - kube-scheduler
     - --address=0.0.0.0
     - --bind-address=127.0.0.1
-    - --feature-gates=CSINodeInfo=true,CSIDriverRegistry=true,KubeletPluginsWatcher=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true,VolumePVCDataSource=true
+    - --feature-gates=CSINodeInfo=true,CSIDriverRegistry=true,VolumeSnapshotDataSource=true,ExpandCSIVolumes=true,VolumePVCDataSource=true
     - --kubeconfig=/etc/kubernetes/scheduler.conf
     - --leader-elect=true
     - --v={{getv "/env/kube_log_level"}}
-    image: gcr.azk8s.cn/google_containers/hyperkube:v1.15.5
+    image: gcr.azk8s.cn/google_containers/hyperkube:v1.16.7
     imagePullPolicy: IfNotPresent
     livenessProbe:
       failureThreshold: 8

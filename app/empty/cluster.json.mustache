@@ -6,58 +6,13 @@
             "etcd_service": {{cluster.etcd_service}},
             "elk_service": {{cluster.elk_service}}
         },
-        "upgrade_policy": [
-            "appv-53p2pg79",
-            "appv-e5ni6ltd"
-        ],
-        "upgrading_policy": "in-place",
-        "in-place-upgrade-nodes": [{
-                "container":{
-                    "snapshot": "ss-81cj2dpv",
-                    "zone": "sh1a"
-                },
-                "copy":[{
-                        "mount_role": "master",
-                        "mount_point": "/upgrade",
-                        "mount_options": "defaults,noatime",
-                        "filesystem": "ext4",
-                        "source": "/upgrade",
-                        "destination": "/opt/upgrade"
-                    },
-                    {
-                        "mount_role": "node_perf",
-                        "mount_point": "/upgrade",
-                        "mount_options": "defaults,noatime",
-                        "filesystem": "ext4",
-                        "source": "/upgrade",
-                        "destination": "/opt/upgrade"
-                    },
-                    {
-                        "mount_role": "node_super_perf",
-                        "mount_point": "/upgrade",
-                        "mount_options": "defaults,noatime",
-                        "filesystem": "ext4",
-                        "source": "/upgrade",
-                        "destination": "/opt/upgrade"
-                    },
-                    {
-                        "mount_role": "client",
-                        "mount_point": "/upgrade",
-                        "mount_options": "defaults,noatime",
-                        "filesystem": "ext4",
-                        "source": "/upgrade",
-                        "destination": "/opt/upgrade"
-                    }
-                ]
-            }
-        ],
         "need_tag": true,
         "nodes": [
             {
                 "role": "master",
                 "container": {
                     "type": "kvm",
-                    "image": "img-o8mvyya1",
+                    "image": "img-u8atvx16",
                     "zone": "sh1a"
                 },
                 "instance_class": {{cluster.master.instance_class}},
@@ -83,46 +38,39 @@
                 "services": {
                     "init": {
                         "order": 2,
-                        "cmd": "/opt/kubernetes/script/init-master.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
                     },
                     "start": {
                         "order": 1,
-                        "cmd": "/opt/kubernetes/script/start-master.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
                     },
                     "stop": {
-                        "cmd": "/opt/kubernetes/script/stop-master.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
                     },
                     "destroy": {
                         "order": 1,
                         "nodes_to_execute_on": 1,
                         "post_stop_service": false,
-                        "cmd": "/opt/kubernetes/script/destroy-master.sh"
+                        "cmd": "/opt/kubernetes/script/empty-script.sh"
                     },
                     "scale_in":{
                         "nodes_to_execute_on": 1,
-                        "cmd": "/opt/kubernetes/script/scale-in.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 86400
-                    },
-                    "upgrade": {
-                        "order": 1,
-                        "cmd": "/opt/upgrade/kubernetes/script/upgrade-master.sh"
-                    },
-                    "rollback": {
-                        "cmd": "/opt/kubernetes/script/empty-script.sh"
                     }
                 },
                 "custom_metadata": {
-                    "cmd": "/opt/kubernetes/script/get-kubeadm-token.sh"
+                    "cmd": "/opt/kubernetes/script/empty-script.sh"
                 }
             },
             {
                 "role": "node_perf",
                 "container": {
                     "type": "kvm",
-                    "image": "img-o8mvyya1",
+                    "image": "img-u8atvx16",
                     "zone": "sh1a"
                 },
                 "instance_class": 0,
@@ -139,24 +87,17 @@
                 "services": {
                     "init": {
                         "order": 2,
-                        "cmd": "/opt/kubernetes/script/init-node.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
                     },
                     "start": {
                         "order": 2,
-                        "cmd": "/opt/kubernetes/script/start-node.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
                     },
                     "stop": {
-                        "cmd": "/opt/kubernetes/script/stop-node.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
-                    },
-                    "upgrade": {
-                        "order": 2,
-                        "cmd": "/opt/upgrade/kubernetes/script/upgrade-node.sh"
-                    },
-                    "rollback": {
-                        "cmd": "/opt/kubernetes/script/empty-script.sh"
                     }
                 },
                 "advanced_actions": ["scale_horizontal"]
@@ -165,7 +106,7 @@
                 "role": "node_super_perf",
                 "container": {
                     "type": "kvm",
-                    "image": "img-o8mvyya1",
+                    "image": "img-u8atvx16",
                     "zone": "sh1a"
                 },
                 "instance_class": 1,
@@ -187,19 +128,12 @@
                     },
                     "start": {
                         "order": 2,
-                        "cmd": "/opt/kubernetes/script/start-node.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
                     },
                     "stop": {
-                        "cmd": "/opt/kubernetes/script/stop-node.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
-                    },
-                    "upgrade": {
-                        "order": 2,
-                        "cmd": "/opt/kubernetes/script/empty-script.sh"
-                    },
-                    "rollback": {
-                        "cmd": "/opt/kubernetes/script/empty-script.sh"
                     }
                 },
                 "advanced_actions": ["scale_horizontal"]
@@ -208,7 +142,7 @@
                 "role": "client",
                 "container": {
                     "type": "kvm",
-                    "image": "img-o8mvyya1",
+                    "image": "img-u8atvx16",
                     "zone": "sh1a"
                 },
                 "instance_class": {{cluster.client.instance_class}},
@@ -220,24 +154,17 @@
                 "services": {
                     "init": {
                         "order": 1,
-                        "cmd": "/opt/kubernetes/script/init-client.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
                     },
                     "start": {
                         "order": 3,
-                        "cmd": "/opt/kubernetes/script/start-client.sh",
+                        "cmd": "/opt/kubernetes/script/empty-script.sh",
                         "timeout": 1200
-                    },
-                    "upgrade": {
-                        "order": 3,
-                        "cmd": "/opt/upgrade/kubernetes/script/upgrade-client.sh"
-                    },
-                    "rollback": {
-                        "cmd": "/opt/kubernetes/script/empty-script.sh"
                     }
                 },
                 "custom_metadata": {
-                    "cmd": "/opt/kubernetes/script/get-loadbalancer-ip.sh"
+                    "cmd": "/opt/kubernetes/script/empty-script.sh"
                 }
             }
         ],
@@ -273,6 +200,6 @@
             "kubesphere_eip": {{env.kubesphere_eip}},
             "kubernetes_eip": {{env.kubernetes_eip}},
             "install_kubesphere":{{env.install_kubesphere}},
-            "kubernetes_version": "v1.15.5"
+            "kubernetes_version": "v1.16.7"
         }
 }

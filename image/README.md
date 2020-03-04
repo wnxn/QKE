@@ -5,6 +5,7 @@
 - 下载代码仓库
 ```bash
 apt-get install -y git
+# git clone https://github.com/wnxn/QKE.git /opt/kubernetes
 git clone https://github.com/QingCloudAppcenter/QKE.git /opt/kubernetes
 cd /opt/kubernetes
 ```
